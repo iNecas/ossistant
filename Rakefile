@@ -1,7 +1,17 @@
 $:.unshift File.expand_path('../lib', __FILE__)
 require 'ossistant'
+require 'rake/testtask'
+require 'fileutils'
 
 OSSISTANT_ENV = ENV['RACK_ENV'] || 'development'
+
+
+desc "Unit Tests"
+Rake::TestTask.new do |t|
+  t.libs << 'lib' << 'test'
+  t.test_files = FileList['test/*_test.rb']
+  t.verbose = true
+end
 
 # Setup the environment for the application
 task :environment do

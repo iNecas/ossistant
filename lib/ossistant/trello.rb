@@ -1,0 +1,1 @@
+require 'ossistant/trello/interface'
