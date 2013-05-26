@@ -38,8 +38,6 @@ module Ossistant
 
       def incomming_web_request(request)
         puts "incomming event"
-        require 'pp'
-        pp request
       end
     end
   end

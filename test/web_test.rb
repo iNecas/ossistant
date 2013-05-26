@@ -17,10 +17,12 @@ module Ossistant
       it 'passes the event to the right interface' do
         github_interface = Ossistant.config.interfaces.find('github')
         github_interface.expects('incomming_web_request').with do |request|
-          request.must_be_instance_of Sinatra::Request
+          request.env['HTTP_X_GITHUB_EVENT'].must_equal 'pull_request'
+          request.params.must_equal data
         end
         header 'Content-Type', 'application/json'
         header 'X-Hub-Signature', github_interface.generate_sig(body)
+        header 'X-Github-Event', 'pull_request'
         post '/interfaces/github/event', body
       end
 
