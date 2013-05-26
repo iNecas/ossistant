@@ -19,17 +19,10 @@ module Ossistant
     post '/interfaces/:interface/event' do |interface_name|
       interface = Ossistant.config.interfaces.find(interface_name)
 
-      unless interface
-        respond 404, "Interface with name #{interface_name} not found"
-      end
-
-      unless interface.authentic?(request)
-        respond 501, 'Unauthorized'
-      end
-
+      respond 404, "Interface with name #{interface_name} not found" unless interface
+      respond 501, 'Unauthorized' unless interface.authentic?(request)
 
       interface.incomming_web_request(request)
-
       respond 202, "Processing"
     end
 
