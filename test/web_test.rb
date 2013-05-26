@@ -16,15 +16,17 @@ module Ossistant
 
       it 'passes the event to the right interface' do
         github_interface = Ossistant.config.interfaces.find('github')
-        github_interface.expects('incomming_event').with(data)
+        github_interface.expects('incomming_web_request').with do |request|
+          request.must_be_instance_of Sinatra::Request
+        end
         header 'Content-Type', 'application/json'
-        header 'X_HUB_SIGNATURE', github_interface.generate_sig(body)
+        header 'X-Hub-Signature', github_interface.generate_sig(body)
         post '/interfaces/github/event', body
       end
 
       it 'refused the request if not authentic' do
         header 'Content-Type', 'application/json'
-        header 'X_HUB_SIGNATURE', 'not authentic'
+        header 'X_Hub_Signature', 'not authentic'
         post '/interfaces/github/event', body
         last_response.status.must_equal 501
       end

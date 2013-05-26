@@ -7,7 +7,7 @@ module Ossistant
 
       DIGEST = OpenSSL::Digest::Digest.new('sha1')
 
-      attr_reader :token
+      attr_reader :secret
 
       def self.type_name
         'github_push'
@@ -15,17 +15,18 @@ module Ossistant
 
       def initialize(config)
         super
-        @token = config['token']
+        @secret = config['secret']
       end
 
       def generate_sig(body)
-        "sha1=#{OpenSSL::HMAC.hexdigest(DIGEST, token, body)}"
+        "sha1=#{OpenSSL::HMAC.hexdigest(DIGEST, secret, body.to_s)}"
       end
 
       # @param [Sinatra::Request]
       # @return [true, false]
       def authentic?(request)
-        body = request.body.rewind && request.body.read
+        request.body.rewind
+        body = request.body.read
         sig_client = generate_sig(body)
         sig_server = request.env['HTTP_X_HUB_SIGNATURE']
         if constant_time_equal?(sig_client, sig_server)
@@ -35,8 +36,10 @@ module Ossistant
         end
       end
 
-      def incomming_event(data)
-        
+      def incomming_web_request(request)
+        puts "incomming event"
+        require 'pp'
+        pp request
       end
     end
   end

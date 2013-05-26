@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'dynflow'
+gem 'dynflow', :path => '/home/inecas/Projects/dynflow'
 gem 'activerecord'
 gem 'sqlite3'
 

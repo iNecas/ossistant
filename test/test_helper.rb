@@ -19,7 +19,7 @@ test_config = {
     },
     'github' => {
       'type' => 'github_push',
-      'token' => 'github_token'
+      'secret' => 'github_secret'
     }
   }
 }

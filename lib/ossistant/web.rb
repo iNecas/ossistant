@@ -27,7 +27,8 @@ module Ossistant
         respond 501, 'Unauthorized'
       end
 
-      interface.incomming_event(request.params)
+
+      interface.incomming_web_request(request)
 
       respond 202, "Processing"
     end
