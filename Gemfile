@@ -9,6 +9,8 @@ gem 'sinatra-contrib'
 gem 'rack-contrib'
 gem 'json'
 
+gem 'octokit'
+
 group :development do
   gem 'pry'
 end

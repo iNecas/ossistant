@@ -18,6 +18,11 @@ module Ossistant
         @secret = config['secret']
       end
 
+      # the interface for getting additional information
+      def api
+        @api ||= Octokit::Client.new
+      end
+
       def generate_sig(body)
         "sha1=#{OpenSSL::HMAC.hexdigest(DIGEST, secret, body.to_s)}"
       end
@@ -36,8 +41,17 @@ module Ossistant
         end
       end
 
-      def incomming_web_request(request)
-        puts "incomming event"
+      def incoming_web_request(request)
+        action = case request.env['HTTP_X_GITHUB_EVENT']
+                 when 'pull_request'
+                   PullRequest
+                 else
+                   # TODO: logging
+                   nil
+                 end
+        if action
+          action.trigger(self, request.params)
+        end
       end
     end
   end

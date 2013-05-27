@@ -12,7 +12,7 @@ module Ossistant
       github = subject.find('github')
       github.class.must_equal Ossistant::Github::PushInterface
       github.name.must_equal 'github'
-      github.token.must_equal 'github_token'
+      github.secret.must_equal 'github_secret'
     end
 
   end

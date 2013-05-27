@@ -16,7 +16,7 @@ module Ossistant
 
       it 'passes the event to the right interface' do
         github_interface = Ossistant.config.interfaces.find('github')
-        github_interface.expects('incomming_web_request').with do |request|
+        github_interface.expects('incoming_web_request').with do |request|
           request.env['HTTP_X_GITHUB_EVENT'].must_equal 'pull_request'
           request.params.must_equal data
         end

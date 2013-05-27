@@ -22,7 +22,7 @@ module Ossistant
       respond 404, "Interface with name #{interface_name} not found" unless interface
       respond 501, 'Unauthorized' unless interface.authentic?(request)
 
-      interface.incomming_web_request(request)
+      interface.incoming_web_request(request)
       respond 202, "Processing"
     end
 
