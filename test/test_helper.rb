@@ -6,6 +6,7 @@ require 'minitest/spec'
 require 'rack/test'
 require 'ossistant'
 require 'mocha/setup'
+require 'dynflow/test/unit'
 
 require 'pry'
 
