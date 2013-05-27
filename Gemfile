@@ -9,6 +9,7 @@ gem 'sinatra-contrib'
 gem 'rack-contrib'
 gem 'json'
 
+gem 'ruby-trello'
 gem 'octokit'
 
 group :development do

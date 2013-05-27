@@ -13,7 +13,8 @@ module Ossistant
       let(:author_data) do
         { 'login'=>'iNecas',
           'name'=>'Ivan Necas',
-          'url'=>'https://github.com/iNecas',
+          'html_url'=>'https://github.com/iNecas',
+          'avatar_url'=>'https://secure.gravatar.com/avatar/404.png',
           'email'=>'inecas@redhat.com',
           'company'=>'Red Hat' }
       end
@@ -27,10 +28,9 @@ module Ossistant
 
       it 'publishes the pull request action' do
         mocked_github_api.expects('user').with('iNecas').returns(author_data)
-
-        action = dynflow_triggered_action do
-          interface.incoming_web_request(request)
-        end
+        interface.bus = testing_bus
+        interface.incoming_web_request(request)
+        action = testing_bus.triggered_action
 
         expected_action_data = {
           "interface"=>{"name"=>"github"},
@@ -38,12 +38,15 @@ module Ossistant
           "author"=> {
             "login"=>"iNecas",
             "name"=>"Ivan Necas",
-            "url"=>nil,
+            "url"=>"https://github.com/iNecas",
+            "avatar_url"=>"https://secure.gravatar.com/avatar/404.png",
             "email"=>"inecas@redhat.com",
             "company"=>"Red Hat"
           },
+          "repository"=>{"name"=>"trellolo"},
           "url"=>"https://github.com/iNecas/trellolo/pull/3",
           "issue_url"=>"https://github.com/iNecas/trellolo/issues/3",
+          "number"=>3,
           "title"=>"Add license",
           "body"=>"Open source code without license is as useful as\n proprietary code without money."
         }

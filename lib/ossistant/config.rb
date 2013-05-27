@@ -19,6 +19,14 @@ module Ossistant
       end
     end
 
+    def rule_configs(rule)
+      @config['rules'].find_all do |name, config|
+        config['type'] == rule.rule_name
+      end.map do |(name, config)|
+        config.merge('name' => name)
+      end
+    end
+
     def interfaces
       @interfaces ||= Interfaces.new(self)
     end

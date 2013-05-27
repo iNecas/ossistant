@@ -22,13 +22,20 @@ module Ossistant
   def self.load_interfaces
     require 'ossistant/trello'
     require 'ossistant/github'
+    require 'ossistant/rules'
     config.interfaces.load
+  end
+
+  # Default bus to be used for handling Dynflow actions
+  def self.bus
+    @bus ||= Dynflow::Bus.new
   end
 
 end
 
 require 'dynflow'
 require 'ossistant/interfaces'
+require 'ossistant/rule'
 require 'ossistant/config'
 require 'ossistant/environment'
 require 'ossistant/web'

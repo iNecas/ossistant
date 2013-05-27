@@ -1,5 +1,6 @@
 require 'openssl'
 require 'digest/sha2'
+require 'octokit'
 
 module Ossistant
   module Github
@@ -42,15 +43,16 @@ module Ossistant
       end
 
       def incoming_web_request(request)
-        action = case request.env['HTTP_X_GITHUB_EVENT']
-                 when 'pull_request'
-                   PullRequest
-                 else
-                   # TODO: logging
-                   nil
-                 end
-        if action
-          action.trigger(self, request.params)
+        action_class = case request.env['HTTP_X_GITHUB_EVENT']
+                       when 'pull_request'
+                         PullRequest
+                       else
+                         # TODO: logging
+                         nil
+                       end
+        if action_class
+          self.bus.trigger(action_class, self, request.params)
+          # TODO: logging
         end
       end
     end

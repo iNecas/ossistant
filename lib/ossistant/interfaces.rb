@@ -9,8 +9,11 @@ module Ossistant
         Ossistant.config.interfaces.types << klass
       end
 
+      attr_accessor :bus
+
       def initialize(config)
         @name = config['name']
+        @bus = Ossistant.bus
       end
 
       # Is the event from web request for this interface authentic?
@@ -37,6 +40,7 @@ module Ossistant
       @interfaces = {}
     end
 
+    # load the interfaces from configuration
     def load
       @types.each do |klass|
         @config.interface_configs(klass.type_name).each do |config|

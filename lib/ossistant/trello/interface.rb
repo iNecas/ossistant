@@ -1,3 +1,5 @@
+require 'trello'
+
 module Ossistant
   module Trello
     class Interface < Interfaces::Base
@@ -13,6 +15,13 @@ module Ossistant
         @secret = config['secret']
         @token = config['token']
       end
+
+      def api
+        @api ||= ::Trello::Client.new(:consumer_key => key,
+                                      :consumer_secret => secret,
+                                      :oauth_token => token)
+      end
+
     end
   end
 end
