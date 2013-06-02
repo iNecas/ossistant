@@ -10,22 +10,23 @@ require 'dynflow/test/unit'
 
 require 'pry'
 
-test_config = {
-  'interfaces' => {
-    'trello' => {
-      'type' => 'trello',
-      'key' => 'trello_key',
-      'secret' => 'trello_secret',
-      'token' => 'trello_token'
-    },
-    'github' => {
-      'type' => 'github_push',
-      'secret' => 'github_secret'
-    }
+interfaces_config = {
+  'trello' => {
+    'type' => 'trello',
+    'key' => 'trello_key',
+    'secret' => 'trello_secret',
+    'token' => 'trello_token'
+  },
+  'github' => {
+    'type' => 'github_push',
+    'secret' => 'github_secret'
   }
 }
 
-Ossistant.instance_variable_set('@config', Ossistant::Config.new(test_config))
+rules_config = {}
+
+config = Ossistant::Config.new(interfaces_config, rules_config)
+Ossistant.instance_variable_set('@config', config)
 Ossistant.setup_env
 
 def read_fixture(name)

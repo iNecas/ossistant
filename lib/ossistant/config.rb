@@ -3,16 +3,25 @@ require 'yaml'
 module Ossistant
   class Config
 
-    def initialize(config = nil)
-      @config = config || YAML.load_file(config_path)
+    def initialize(interfaces_config = nil, rules_config = nil)
+      @interfaces_config = interfaces_config || load_interfaces_config
+      @rules_config = rules_config || load_rules_config
     end
 
-    def config_path
-      File.join(Ossistant.env.root, 'config/ossistant.yml')
+    def load_interfaces_config
+      YAML.load_file(config_path('interfaces'))
+    end
+
+    def load_rules_config
+      YAML.load_file(config_path('rules'))
+    end
+
+    def config_path(name)
+      File.join(Ossistant.env.root, "config/#{name}.yml")
     end
 
     def interface_configs(type)
-      @config['interfaces'].find_all do |name, config|
+      @interfaces_config.find_all do |name, config|
         config['type'] == type
       end.map do |(name, config)|
         config.merge('name' => name)
@@ -20,7 +29,7 @@ module Ossistant
     end
 
     def rule_configs(rule)
-      @config['rules'].find_all do |name, config|
+      @rules_config.find_all do |name, config|
         config['type'] == rule.rule_name
       end.map do |(name, config)|
         config.merge('name' => name)

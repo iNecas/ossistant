@@ -1,4 +1,3 @@
-config/database.yml
-config/ossistant.yml
+config/*.yml
 db/*.sqlite3
 Gemfile.lock
