@@ -28,7 +28,7 @@ module Ossistant
 
   # Default bus to be used for handling Dynflow actions
   def self.bus
-    @bus ||= Dynflow::Bus.new
+    @bus ||= Dynflow::Bus::ActiveRecordBus.new
   end
 
 end

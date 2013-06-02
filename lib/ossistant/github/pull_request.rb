@@ -48,6 +48,10 @@ module Ossistant
                   'body'  => raw_pr['body'])
       end
 
+      # just to store the output
+      # TODO in Dynflow: every action with plan_self action should store a run step
+      def run; end
+
     end
   end
 end
