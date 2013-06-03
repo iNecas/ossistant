@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'dynflow', :path => '/home/inecas/Projects/dynflow'
 gem 'activerecord'
+gem 'activesupport'
 gem 'sqlite3'
 
 gem 'sinatra'
