@@ -13,13 +13,33 @@ module Ossistant
       end
 
       def plan(*args)
-        pr = input['pull_request']
-        return unless pr['action'] == 'opened'
+        return unless pull_request['action'] == 'opened'
 
+        configs.each do |config|
+          next unless conditions_satisfied?(config)
+
+          card_create_input = {
+            'interface' => { 'name' => config['trello_interface'] },
+            'card' => card.merge('list_id' => config['trello_list_id']),
+          }
+          plan_action(Actions::CardCreate, card_create_input)
+        end
+
+      end
+
+      private
+
+      def pull_request
+        input['pull_request']
+      end
+
+      # Prepares the card input for Actions::CardCreate
+      def card
         author = input['pull_request']['author']
         card = {
-          'identifier' => "PR #{pr['repository']['name']}/#{pr['number']}",
-          'title' => "#{pr['title']} [#{author['name']}]",
+          'identifier' =>
+            "PR #{pull_request['repository']['name']}/#{pull_request['number']}",
+          'title' => "#{pull_request['title']} [#{author['name']}]",
           'body' => <<BODY
 Contributor Information
 -----------------------
@@ -29,35 +49,31 @@ Contributor Information
  * Author: **#{author['name']}** <#{author['email']}>
  * Company: #{author['company']}
  * Github ID: [#{author['login']}](#{author['url']})
- * [Pull Request #{pr['number']} Discussion](#{pr['html_url']})
- * [File Diff](#{pr['html_url']}/files)
+ * [Pull Request #{pull_request['number']} Discussion](#{pull_request['html_url']})
+ * [File Diff](#{pull_request['html_url']}/files)
 
 Pull Request
 ============
-#{pr['body']}
+#{pull_request['body']}
 BODY
         }
+        return card
+      end
 
-        configs.each do |config|
-          repos = Array(config['repos'])
-          if repos.any? && !repos.include?(pr['repository']['name'])
-            next
-          end
-          github_interfaces = Array(config['github_interfaces'])
-          if github_interfaces.any? &&
-              !github_interfaces.include?(input['interface']['name'])
-            next
-          end
-
-          trello_interface = config['trello_interface']
-          list_id = config['trello_list_id']
-
-          plan_action(Actions::CardCreate, {
-                        'interface' => { 'name' => trello_interface },
-                        'card' => card.merge('list_id' => list_id),
-                      })
+      # Says if the given pull request fits the conditions in given configuration.
+      # @param [Hash] Rule configuration
+      def conditions_satisfied?(config)
+        repos = Array(config['repos'])
+        if repos.any? && !repos.include?(pull_request['repository']['name'])
+          return false
+        end
+        github_interfaces = Array(config['github_interfaces'])
+        if github_interfaces.any? &&
+            !github_interfaces.include?(input['interface']['name'])
+          return false
         end
 
+        return true
       end
 
     end

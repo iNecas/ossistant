@@ -30,7 +30,7 @@ module Ossistant
         end
 
         def find_card(list_id, identifier)
-          list = @api.find(:list, list_id)
+          list = @client.find(:list, list_id)
           all_cards = list.board.cards
           if card = all_cards.find { |card| card.name.include? identifier }
             return card
@@ -40,10 +40,10 @@ module Ossistant
         def create_card(list_id, identifier, title, body)
           name = "(#{identifier}) #{title}"
 
-          @api.create(:card,
-                      'idList' => list_id,
-                      'name' => name,
-                      'desc' => body)
+          @client.create(:card,
+                         'idList' => list_id,
+                         'name' => name,
+                         'desc' => body)
         end
 
       end
