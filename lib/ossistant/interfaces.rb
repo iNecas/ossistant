@@ -41,7 +41,7 @@ module Ossistant
     # interfaces and their stored configuration.
     class Config
 
-      attr_reader :interface_configs
+      attr_reader :interfaces_config
 
       # @param [Hash] interfaces_config
       def initialize(interfaces_config)

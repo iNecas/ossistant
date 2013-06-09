@@ -10,14 +10,18 @@ module Ossistant
 
       let(:interface) { Ossistant.config.interfaces.find('trello') }
       let(:data) do
-        { 'interface'=>{'name'=>'trello'},
-          'list_id'=>'1234567',
-          'identifier'=>'PR trellolo/123',
-          'title'=>'No license',
-          'body'=><<BODY }
+        {
+          'interface' => { 'name' => 'trello'},
+          'card' => {
+            'list_id' => '1234567',
+            'identifier' => 'PR trellolo/123',
+            'title' => 'No license',
+            'body' => <<BODY
 Open source code without license is as useful as
 proprietary code without money.
 BODY
+          }
+        }
       end
       let(:mocked_trello_api) do
         stub = self.stub
@@ -26,10 +30,11 @@ BODY
       end
 
       it 'creates the ticket in Trello' do
-        #mocked_trello_api.expects('user').with('iNecas').returns(author_data)
-        # TODO: finish after making it work agains the life server
-        #action = CardCreate.new(data)
-        #action.run
+        mocked_trello_api.expects('find_card').with('1234567', 'PR trellolo/123').
+          returns(nil)
+        mocked_trello_api.expects('create_card')
+        action = CardCreate.new(data)
+        action.run
       end
     end
   end

@@ -18,13 +18,15 @@ module Ossistant
 
     class Config
 
+      attr_reader :rules_config
+
       # @param [Hash] rules_config
       def initialize(rules_config)
         @rules_config = rules_config
       end
 
       def all_of_type(rule_class)
-        @rules_config.find_all do |name, config|
+        rules_config.find_all do |name, config|
           config['type'] == rule_class.rule_name
         end.map do |(name, config)|
           config.merge('name' => name)
