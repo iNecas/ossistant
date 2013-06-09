@@ -1,7 +1,7 @@
 pr_to_trello:
   type: pull_request_to_trello
   # optional - if not specified, rule will be applied for all github interfaces
-  github_interfaces: my_github_push
+  github_interfaces: my_github
   # optional - if not specified, rule will be applied for all repos
   repos:
     - repo1

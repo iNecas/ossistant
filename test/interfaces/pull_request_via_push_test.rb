@@ -2,9 +2,9 @@ require 'test_helper'
 require 'ostruct'
 
 module Ossistant
-  module Github
+  module Interfaces
 
-    describe 'pull request via push' do
+    describe Github do
 
       include Dynflow::Test::Unit
 
@@ -26,7 +26,7 @@ module Ossistant
         stub
       end
 
-      it 'publishes the pull request action' do
+      it 'publishes the pull request event' do
         mocked_github_api.expects('user').with('iNecas').returns(author_data)
         interface.bus = testing_bus
         interface.incoming_web_request(request)

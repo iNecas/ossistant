@@ -20,24 +20,12 @@ module Ossistant
       File.join(Ossistant.env.root, "config/#{name}.yml")
     end
 
-    def interface_configs(type)
-      @interfaces_config.find_all do |name, config|
-        config['type'] == type
-      end.map do |(name, config)|
-        config.merge('name' => name)
-      end
-    end
-
-    def rule_configs(rule)
-      @rules_config.find_all do |name, config|
-        config['type'] == rule.rule_name
-      end.map do |(name, config)|
-        config.merge('name' => name)
-      end
-    end
-
     def interfaces
-      @interfaces ||= Interfaces.new(self)
+      @interfaces ||= Interfaces::Config.new(@interfaces_config)
+    end
+
+    def rules
+      @rules ||= Rules::Config.new(@rules_config)
     end
   end
 end

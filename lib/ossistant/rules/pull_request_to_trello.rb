@@ -2,14 +2,14 @@ module Ossistant
   module Rules
     class PullRequestToTrello < Dynflow::Action
 
-      include Rule
+      include Rules::Base
 
       def self.subscribe
-        Github::PullRequest
+        Events::PullRequest
       end
 
       input_format do
-        param :pull_request, Github::PullRequest.input
+        param :pull_request, Events::PullRequest.input
       end
 
       def plan(*args)
@@ -52,7 +52,7 @@ BODY
           trello_interface = config['trello_interface']
           list_id = config['trello_list_id']
 
-          plan_action(Trello::CardCreate, {
+          plan_action(Actions::CardCreate, {
                         'interface' => { 'name' => trello_interface },
                         'card' => card.merge('list_id' => list_id),
                       })

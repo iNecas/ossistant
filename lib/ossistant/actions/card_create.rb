@@ -1,5 +1,5 @@
 module Ossistant
-  module Trello
+  module Actions
 
     class CardCreate < Dynflow::Action
 
@@ -26,8 +26,9 @@ module Ossistant
       end
 
       def api
+        return @api if @api
         interface = Ossistant.config.interfaces.find(input['interface']['name'])
-        @api ||= ApiHelpers.new(interface.api)
+        @api = interface.api
       end
 
     end

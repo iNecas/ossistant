@@ -1,5 +1,5 @@
 module Ossistant
-  module Github
+  module Events
     class PullRequest < Dynflow::Action
 
       input_format do

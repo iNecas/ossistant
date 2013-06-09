@@ -17,8 +17,9 @@ interfaces_config = {
     'secret' => 'trello_secret',
     'token' => 'trello_token'
   },
+
   'github' => {
-    'type' => 'github_push',
+    'type' => 'github',
     'secret' => 'github_secret'
   }
 }

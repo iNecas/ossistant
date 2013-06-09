@@ -3,15 +3,15 @@ require 'digest/sha2'
 require 'octokit'
 
 module Ossistant
-  module Github
-    class PushInterface < Interfaces::Base
+  module Interfaces
+    class Github < Interfaces::Base
 
       DIGEST = OpenSSL::Digest::Digest.new('sha1')
 
       attr_reader :secret
 
       def self.type_name
-        'github_push'
+        'github'
       end
 
       def initialize(config)
@@ -43,15 +43,15 @@ module Ossistant
       end
 
       def incoming_web_request(request)
-        action_class = case request.env['HTTP_X_GITHUB_EVENT']
+        event_class = case request.env['HTTP_X_GITHUB_EVENT']
                        when 'pull_request'
-                         PullRequest
+                         Events::PullRequest
                        else
                          # TODO: logging
                          nil
                        end
-        if action_class
-          self.bus.trigger(action_class, self, request.params)
+        if event_class
+          self.bus.trigger(event_class, self, request.params)
           # TODO: logging
         end
       end

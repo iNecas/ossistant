@@ -10,7 +10,7 @@ module Ossistant
 
     it 'preloads the interfaces from configuration' do
       github = subject.find('github')
-      github.class.must_equal Ossistant::Github::PushInterface
+      github.class.must_equal Ossistant::Interfaces::Github
       github.name.must_equal 'github'
       github.secret.must_equal 'github_secret'
     end

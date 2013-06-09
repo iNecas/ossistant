@@ -1,12 +1,18 @@
 module Ossistant
-  class Interfaces
+  module Interfaces
 
+    # The inteface should inherit from this class
     class Base
 
       attr_reader :name
 
       def self.inherited(klass)
-        Ossistant.config.interfaces.types << klass
+        self.types << klass
+      end
+
+      # @return [Array<Interfaces::Base>] interfaces types available
+      def self.types
+        @types ||= []
       end
 
       attr_accessor :bus
@@ -31,27 +37,42 @@ module Ossistant
 
     end
 
-    attr_reader :interfaces, :types
+    # Keeps the configuration of all the interfaces. Layer between the
+    # interfaces and their stored configuration.
+    class Config
 
-    # @param [Ossistant::Config]
-    def initialize(config)
-      @config = config
-      @types = []
-      @interfaces = {}
-    end
+      attr_reader :interface_configs
 
-    # load the interfaces from configuration
-    def load
-      @types.each do |klass|
-        @config.interface_configs(klass.type_name).each do |config|
-          interface = klass.new(config)
-          @interfaces[interface.name] = interface
+      # @param [Hash] interfaces_config
+      def initialize(interfaces_config)
+        @interfaces_config = interfaces_config
+        @interfaces = {}
+      end
+
+      # load the interfaces from configuration
+      def load
+        Interfaces::Base.types.each do |klass|
+          all_of_type(klass.type_name).each do |config|
+            interface = klass.new(config)
+            @interfaces[interface.name] = interface
+          end
         end
       end
-    end
 
-    def find(name)
-      @interfaces[name.to_s]
+      def find(name)
+        @interfaces[name.to_s]
+      end
+
+      private
+
+      def all_of_type(type)
+        @interfaces_config.find_all do |name, config|
+          config['type'] == type
+        end.map do |(name, config)|
+          config.merge('name' => name)
+        end
+      end
+
     end
 
   end

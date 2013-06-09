@@ -20,9 +20,6 @@ module Ossistant
   end
 
   def self.load_interfaces
-    require 'ossistant/trello'
-    require 'ossistant/github'
-    require 'ossistant/rules'
     config.interfaces.load
   end
 
@@ -35,7 +32,19 @@ end
 
 require 'dynflow'
 require 'ossistant/interfaces'
-require 'ossistant/rule'
+require 'ossistant/rules'
 require 'ossistant/config'
 require 'ossistant/environment'
 require 'ossistant/web'
+
+# Github
+require 'ossistant/interfaces/github'
+require 'ossistant/events/pull_request'
+
+# Trello
+require 'ossistant/interfaces/trello'
+require 'ossistant/actions/card_create.rb'
+
+# Github <-> Trello
+require 'ossistant/rules/pull_request_to_trello'
+

@@ -2,7 +2,7 @@ require 'test_helper'
 require 'ostruct'
 
 module Ossistant
-  module Trello
+  module Actions
 
     describe CardCreate do
 

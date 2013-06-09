@@ -3,6 +3,8 @@ require 'yaml'
 require 'erb'
 
 module Ossistant
+
+  # Prepares Ossistant runtime environment
   class Environment
 
     attr_accessor :name, :root
