@@ -4,6 +4,7 @@ gem 'dynflow', :path => '/home/inecas/Projects/dynflow'
 gem 'activerecord'
 gem 'activesupport'
 gem 'sqlite3'
+gem 'pg'
 
 gem 'delayed_job_active_record'
 

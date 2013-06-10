@@ -24,7 +24,6 @@ namespace :db do
   desc "Create the database"
   task(:create => :environment) do
     db_name = Ossistant.env.db_config['database']
-    conn = ActiveRecord::Base.connection
     if Ossistant.env.db_config['adapter'] =~ /sqlite/
       require 'pathname'
       path = Pathname.new(db_name)
@@ -32,8 +31,11 @@ namespace :db do
 
       FileUtils.rm(file)
     else
-      conn.drop_database(db_name) if conn.respond_to?(:drop_database)
-      conn.create_database(db_name) if conn.respond_to?(:drop_database)
+      Ossistant.env.connect_db('database' => 'postgres',
+                               'schema_search_path' => 'public')
+
+      ActiveRecord::Base.connection.drop_database(db_name)
+      ActiveRecord::Base.connection.create_database(db_name)
     end
     puts "Created empty database for #{OSSISTANT_ENV}"
   end

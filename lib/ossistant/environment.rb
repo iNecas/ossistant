@@ -37,14 +37,14 @@ module Ossistant
     def load_db_driver
       case db_config['adapter']
       when 'sqlite3' then require 'sqlite3'
-      when 'postgresql' then require 'postgresql'
+      when 'postgresql' then require 'pg'
       else raise "Unsupported adapter #{db_config['adapter']}"
       end
     end
 
-    def connect_db
+    def connect_db(override = {})
       load_db_driver
-      ActiveRecord::Base.establish_connection(db_config)
+      ActiveRecord::Base.establish_connection(db_config.merge(override))
     end
   end
 
