@@ -5,6 +5,8 @@ gem 'activerecord'
 gem 'activesupport'
 gem 'sqlite3'
 
+gem 'delayed_job_active_record'
+
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-contrib'

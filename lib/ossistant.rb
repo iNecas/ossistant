@@ -25,12 +25,18 @@ module Ossistant
 
   # Default bus to be used for handling Dynflow actions
   def self.bus
-    @bus ||= Dynflow::Bus::ActiveRecordBus.new
+    @bus ||= Ossistant::DelayedBus.new
+  end
+
+  # persisted bus implementatin
+  def self.persisted_bus
+    @persisted_bus ||= Dynflow::Bus::ActiveRecordBus.new
   end
 
 end
 
 require 'dynflow'
+require 'ossistant/delayed_bus'
 require 'ossistant/interfaces'
 require 'ossistant/rules'
 require 'ossistant/config'

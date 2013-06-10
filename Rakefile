@@ -2,6 +2,7 @@ $:.unshift File.expand_path('../lib', __FILE__)
 require 'ossistant'
 require 'rake/testtask'
 require 'fileutils'
+require 'delayed/tasks'
 
 OSSISTANT_ENV = ENV['RACK_ENV'] || 'development'
 

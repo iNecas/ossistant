@@ -51,7 +51,7 @@ module Ossistant
                          nil
                        end
         if event_class
-          self.bus.trigger(event_class, self, request.params)
+          self.bus.trigger(event_class, self.name, request.params)
           # TODO: logging
         end
       end

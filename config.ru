@@ -62,7 +62,7 @@ console = DynflowConsole.setup do
     username == 'admin' and password == 'admin'
   end
 
-  set :bus, Ossistant.bus
+  set :bus, Ossistant.persisted_bus
 end
 
 map('/dynflow') { run(console) }
