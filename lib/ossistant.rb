@@ -54,6 +54,7 @@ require 'ossistant/events/pull_request'
 # Trello
 require 'ossistant/interfaces/trello'
 require 'ossistant/actions/card_create.rb'
+require 'ossistant/actions/card_archive.rb'
 
 # Github <-> Trello
 require 'ossistant/rules/pull_request_to_trello'

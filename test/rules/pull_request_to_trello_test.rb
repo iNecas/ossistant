@@ -7,10 +7,19 @@ module Ossistant
 
       include Dynflow::Test::Unit
 
-      let(:pull_request_data) do
+      let(:rules_config) do
+        {
+          'pr_to_trello' => {
+            'type' => 'pull_request_to_trello',
+            'trello_interface' => 'my_trello',
+            'trello_list_id' => '123456'
+          }
+        }
+      end
+
+      let(:pull_request_data_without_action) do
         {
           "interface" => {"name"=>"github"},
-          "action" => "opened",
           "author" => {
             "login" => "iNecas",
             "name" => "Ivan Necas",
@@ -28,16 +37,6 @@ module Ossistant
         }
       end
 
-      let(:rules_config) do
-        {
-          'pr_to_trello' => {
-            'type' => 'pull_request_to_trello',
-            'trello_interface' => 'my_trello',
-            'trello_list_id' => '123456'
-          }
-        }
-      end
-
       let(:triggered_action) do
         testing_bus.trigger(Rules::PullRequestToTrello) do |action|
           action.input['pull_request'] = pull_request_data
@@ -45,15 +44,25 @@ module Ossistant
         testing_bus.triggered_action
       end
 
-      let(:expected_card_create_input) do
-        {
-          "interface" => {
-            "name" => "my_trello"
-          },
-          "card" => {
-            "identifier" => "PR trellolo/3",
-            "title" => "Add license [Ivan Necas]",
-            "body"=> <<BODY,
+      before do
+        Ossistant.config.rules.stubs(:rules_config).returns(rules_config)
+      end
+
+      describe 'action opened' do
+
+        let(:pull_request_data) do
+          pull_request_data_without_action.merge('action' => 'opened')
+        end
+
+        let(:expected_card_create_input) do
+          {
+            "interface" => {
+              "name" => "my_trello"
+            },
+            "card" => {
+              "identifier" => "PR trellolo/3",
+              "title" => "Add license [Ivan Necas]",
+              "body"=> <<BODY,
 Contributor Information
 -----------------------
 
@@ -70,21 +79,45 @@ Pull Request
 Open source code without license is as useful as
  proprietary code without money.
 BODY
-            "list_id"=>"123456"
+              "list_id"=>"123456"
+            }
           }
-        }
+        end
+
+        it 'should create a corresponding card in Trello' do
+          planned_action = triggered_action.sub_actions.first
+          planned_action.action_class.must_equal Ossistant::Actions::CardCreate
+
+          card_create_input = planned_action.args.first
+          card_create_input.must_equal expected_card_create_input
+        end
       end
 
-      before do
-        Ossistant.config.rules.stubs(:rules_config).returns(rules_config)
-      end
+      describe 'action closed' do
 
-      it 'should create a corresponding card in Trello' do
-        planned_action = triggered_action.sub_actions.first
-        planned_action.action_class.must_equal Ossistant::Actions::CardCreate
+        let(:pull_request_data) do
+          pull_request_data_without_action.merge('action' => 'closed')
+        end
 
-        card_create_input = planned_action.args.first
-        card_create_input.must_equal expected_card_create_input
+        let(:expected_card_archive_input) do
+          {
+            "interface" => {
+              "name" => "my_trello"
+            },
+            "card" => {
+              "identifier" => "PR trellolo/3",
+              "list_id"=>"123456"
+            }
+          }
+        end
+
+        it 'should create a corresponding card in Trello' do
+          planned_action = triggered_action.sub_actions.first
+          planned_action.action_class.must_equal Ossistant::Actions::CardArchive
+
+          card_create_input = planned_action.args.first
+          card_create_input.must_equal expected_card_archive_input
+        end
       end
 
     end

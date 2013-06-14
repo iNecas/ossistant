@@ -13,16 +13,26 @@ module Ossistant
       end
 
       def plan(*args)
-        return unless pull_request['action'] == 'opened'
-
         configs.each do |config|
           next unless conditions_satisfied?(config)
 
-          card_create_input = {
-            'interface' => { 'name' => config['trello_interface'] },
-            'card' => card.merge('list_id' => config['trello_list_id']),
-          }
-          plan_action(Actions::CardCreate, card_create_input)
+          case pull_request['action']
+          when 'opened'
+            card_create_input = {
+              'interface' => { 'name' => config['trello_interface'] },
+              'card' => card.merge('list_id' => config['trello_list_id']),
+            }
+            plan_action(Actions::CardCreate, card_create_input)
+          when 'closed'
+            card_archive_input = {
+              'interface' => { 'name' => config['trello_interface'] },
+              'card' => {
+                'list_id' => config['trello_list_id'],
+                'identifier' => card_identifier
+              }
+            }
+            plan_action(Actions::CardArchive, card_archive_input)
+          end
         end
 
       end
@@ -37,8 +47,7 @@ module Ossistant
       def card
         author = input['pull_request']['author']
         card = {
-          'identifier' =>
-            "PR #{pull_request['repository']['name']}/#{pull_request['number']}",
+          'identifier' => card_identifier,
           'title' => "#{pull_request['title']} [#{author['name']}]",
           'body' => <<BODY
 Contributor Information
@@ -58,6 +67,10 @@ Pull Request
 BODY
         }
         return card
+      end
+
+      def card_identifier
+        "PR #{pull_request['repository']['name']}/#{pull_request['number']}"
       end
 
       # Says if the given pull request fits the conditions in given configuration.

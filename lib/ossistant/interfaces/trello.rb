@@ -46,6 +46,12 @@ module Ossistant
                          'desc' => body)
         end
 
+        def archive_card(card)
+          card.add_comment('Pull request closed. Archiving')
+          card.closed = true
+          card.save
+        end
+
       end
 
     end
