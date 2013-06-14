@@ -42,6 +42,7 @@ end
 require 'dynflow'
 require 'ossistant/delayed_bus'
 require 'ossistant/interfaces'
+require 'ossistant/interfaces/ossistant'
 require 'ossistant/rules'
 require 'ossistant/config'
 require 'ossistant/environment'

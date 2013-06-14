@@ -1,3 +1,8 @@
+# here go the credentials for the ossistant dynflow console
+ossistant:
+  type: ossistant
+  login: admin
+  password: admin
 my_trello:
   type: trello
   key: xxxxxxxxxxxxxxxxxxxxxxxxx

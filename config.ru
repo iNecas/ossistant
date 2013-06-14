@@ -59,10 +59,11 @@ end
 
 console = DynflowConsole.setup do
   use Rack::Auth::Basic, "Restricted Area" do |username, password|
-    username == 'admin' and password == 'admin'
+    settings.web_interface.authentic?(username, password)
   end
 
   set :bus, Ossistant.persisted_bus
+  set :web_interface, Ossistant.config.interfaces.find('ossistant')
 end
 
 map('/dynflow') { run(console) }

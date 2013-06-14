@@ -19,7 +19,7 @@ module Ossistant
 
       def initialize(config)
         @name = config['name']
-        @bus = Ossistant.bus
+        @bus = ::Ossistant.bus
       end
 
       # Is the event from web request for this interface authentic?
