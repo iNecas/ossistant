@@ -25,7 +25,11 @@ module Ossistant
 
   # Default bus to be used for handling Dynflow actions
   def self.bus
-    @bus ||= Ossistant::DelayedBus.new
+    if ENV['NO_DELAYED'] == 'true'
+      @bus ||= self.persisted_bus
+    else
+      @bus ||= Ossistant::DelayedBus.new
+    end
   end
 
   # persisted bus implementatin
