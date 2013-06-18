@@ -5,26 +5,28 @@
   <%= @plan.status %>
 </p>
 
-<table>
-  <tr>
-    <th>Id</th>
-    <th>Phase</th>
-    <th>Action</th>
-    <th>Status</th>
-    <th>Input</th>
-    <th>Output</th>
-    <th>Error</th>
-    <th></th>
-  </tr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Phase</th>
+      <th>Action</th>
+      <th>Status</th>
+      <th>Input</th>
+      <th>Output</th>
+      <th>Error</th>
+      <th></th>
+    </tr>
+  </thead>
 <% @plan.steps.each do |step| %>
   <tr>
-    <th><%= h(step.persistence.persistence_id) %></th>
-    <th><%= h(step.class.name.split('::').last) %></th>
-    <th><%= h(step.action_class.name) %></th>
-    <th><%= h(step.status) %></th>
-    <th><%= h(step.input.inspect) %></th>
-    <th><%= h(step.output.inspect) %></th>
-    <th><%= h(step.error.inspect) %></th>
+    <td><%= h(step.persistence.persistence_id) %></td>
+    <td><%= h(step.class.name.split('::').last) %></td>
+    <td><%= h(step.action_class.name) %></td>
+    <td><%= h(step.status) %></td>
+    <td><%= prettyprint(step.input) %></td>
+    <td><%= h(step.output.to_json) %></td>
+    <td><%= h(step.error.inspect) %></td>
     <td><a href="<%= h(url("/#{@plan.persistence.persistence_id}/steps/#{step.persistence.persistence_id}/skip")) %>" class="postlink">Skip</a></td>
   </tr>
 <% end %>

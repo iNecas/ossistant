@@ -28,6 +28,16 @@ class DynflowConsole < Sinatra::Base
     def bus
       settings.bus
     end
+
+    def prettyprint(value)
+      if value
+        <<HTML
+<pre class="prettyprint">#{h(JSON.pretty_generate(value))}</pre>
+HTML
+      else
+        ""
+      end
+    end
   end
 
   get('/') do
