@@ -2,13 +2,13 @@ require 'test_helper'
 require 'ostruct'
 
 module Ossistant
-  module Interfaces
+  module Importers
 
-    describe Github do
+    describe PullRequestFromWebhook do
 
       include Dynflow::Test::Unit
 
-      let(:interface) { Ossistant.config.interfaces.find('github') }
+      let(:interface) { ::Ossistant.config.interfaces.find('github') }
       let(:data) { JSON.parse(read_fixture('pull_request_opened.json')) }
       let(:author_data) do
         { 'login'=>'iNecas',
@@ -29,8 +29,8 @@ module Ossistant
       it 'publishes the pull request event' do
         mocked_github_api.expects('user').with('iNecas').returns(author_data)
         interface.bus = testing_bus
-        interface.incoming_web_request(request)
-        action = testing_bus.triggered_action
+        testing_bus.trigger(Importers::PullRequestFromWebhook, interface.name, request.params)
+        action = testing_bus.triggered_action.sub_actions.first
 
         expected_action_data = {
           "interface"=>{"name"=>"github"},
@@ -51,7 +51,7 @@ module Ossistant
           "body"=>"Open source code without license is as useful as\n proprietary code without money."
         }
 
-        action.input.must_equal expected_action_data
+        action.args.first.must_equal expected_action_data
       end
     end
   end

@@ -8,7 +8,7 @@ module Ossistant
 
       DIGEST = OpenSSL::Digest::Digest.new('sha1')
 
-      attr_reader :secret
+      attr_reader :secret, :oauth_token
 
       def self.type_name
         'github'
@@ -17,11 +17,12 @@ module Ossistant
       def initialize(config)
         super
         @secret = config['secret']
+        @oauth_token = config['oauth_token']
       end
 
       # the interface for getting additional information
       def api
-        @api ||= Octokit::Client.new
+        @api ||= Octokit::Client.new(:oauth_token => self.oauth_token)
       end
 
       def generate_sig(body)
@@ -45,7 +46,7 @@ module Ossistant
       def incoming_web_request(request)
         event_class = case request.env['HTTP_X_GITHUB_EVENT']
                        when 'pull_request'
-                         Events::PullRequest
+                         Importers::PullRequestFromWebhook
                        else
                          # TODO: logging
                          nil

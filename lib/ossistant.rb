@@ -51,6 +51,8 @@ require 'ossistant/web'
 # Github
 require 'ossistant/interfaces/github'
 require 'ossistant/events/pull_request'
+require 'ossistant/importers/pull_requests_from_repo'
+require 'ossistant/importers/pull_request_from_webhook'
 
 # Trello
 require 'ossistant/interfaces/trello'

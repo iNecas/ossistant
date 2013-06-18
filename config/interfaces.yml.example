@@ -11,3 +11,4 @@ my_trello:
 my_github:
   type: github
   secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  oauth_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
