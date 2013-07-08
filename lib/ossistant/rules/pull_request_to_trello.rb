@@ -77,7 +77,7 @@ BODY
       # @param [Hash] Rule configuration
       def conditions_satisfied?(config)
         repos = Array(config['repos'])
-        if repos.any? && !repos.include?(pull_request['repository']['name'])
+        unless repos_match?(repos, pull_request['repository'])
           return false
         end
         github_interfaces = Array(config['github_interfaces'])
@@ -87,6 +87,17 @@ BODY
         end
 
         return true
+      end
+
+      def repos_match?(repo_names, repo)
+        return true if repo_names.empty?
+        return repo_names.any? do |repo_name|
+          if repo_name.include?('/')
+            repo_name == repo['full_name']
+          else
+            repo_name == repo['name']
+          end
+        end
       end
 
     end

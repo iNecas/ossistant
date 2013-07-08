@@ -18,6 +18,7 @@ gem 'ruby-trello'
 gem 'octokit'
 
 group :development do
+  gem 'shotgun'
   gem 'pry'
 end
 

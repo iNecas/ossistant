@@ -18,7 +18,10 @@ module Ossistant
               'email' => author['email'],
               'company' => author['company']
             },
-            'repository' => { 'name' => repo['name'] },
+            'repository' => {
+              'name' => repo['name'],
+              'full_name' => repo['full_name']
+            },
             'number' => pull_request['number'],
             'url' => pull_request['html_url'],
             'issue_url' => pull_request['issue_url'],

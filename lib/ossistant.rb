@@ -1,3 +1,5 @@
+OSSISTANT_ENV = ENV['RACK_ENV'] || 'development'
+
 module Ossistant
 
   def self.setup_env

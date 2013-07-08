@@ -6,13 +6,23 @@ module Ossistant
     # Every Dynflow action should include this module so that we know
     # that it's realy a rule
     module Base
-      def rule_name
-        self.class.name[/\w+$/].underscore
+
+      def self.included(base)
+        base.send(:include, InstanceMethods)
+        base.extend(ClassMethods)
       end
 
-      # @returns [Array<Hash>] Set of configurations for this rule
-      def configs
-        Ossistant.config.rules.all_of_type(self)
+      module InstanceMethods
+        # @returns [Array<Hash>] Set of configurations for this rule
+        def configs
+          Ossistant.config.rules.all_of_type(self.class)
+        end
+      end
+
+      module ClassMethods
+        def rule_name
+          self.name[/\w+$/].underscore
+        end
       end
     end
 

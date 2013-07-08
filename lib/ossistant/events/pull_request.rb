@@ -17,6 +17,7 @@ module Ossistant
         end
         param :repository, Hash do
           param :name
+          param :full_name
         end
         param :number
         param :url
