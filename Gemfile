@@ -8,6 +8,7 @@ gem 'sqlite3'
 gem 'pg'
 
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
