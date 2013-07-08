@@ -23,7 +23,7 @@ module Ossistant
                     },
                     'repository' => {
                       'name' => raw_repo['name'],
-                      'full_name' => repo['full_name']
+                      'full_name' => raw_repo['full_name']
                     },
                     'number' => raw_pr['number'],
                     'url' => raw_pr['html_url'],
