@@ -6,13 +6,13 @@ module Ossistant
 
       # Transforms the raw data from Github into PullRequest action data
       def plan(interface_name, raw)
-        raw_pr = raw['payload']['pull_request']
-        raw_repo = raw['payload']['repository']
+        raw_pr = raw['pull_request']
+        raw_repo = raw['repository']
         interface = Ossistant.config.interfaces.find(interface_name)
         author = interface.api.user(raw_pr['user']['login'])
         plan_action(Events::PullRequest,
                     'interface' => { 'name' => interface_name },
-                    'action' => raw['payload']['action'],
+                    'action' => raw['action'],
                     'author' => {
                       'login' => author['login'],
                       'name'  => author['name'],
