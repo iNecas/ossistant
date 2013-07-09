@@ -7,7 +7,7 @@ gem 'activesupport'
 gem 'sqlite3'
 gem 'pg'
 
-gem 'delayed_job_active_record'
+gem 'delayed_job_active_record', '0.3.3'
 gem 'daemons'
 
 gem 'sinatra'

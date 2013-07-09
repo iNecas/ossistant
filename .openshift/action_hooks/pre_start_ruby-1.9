@@ -16,7 +16,7 @@
 export APP_NAME=${OPENSHIFT_APP_NAME}
 export DATABASE_URL=${OPENSHIFT_POSTGRESQL_DB_URL}${OPENSHIFT_APP_NAME}
 export WORKLESS_SCALER=null
-export NO_DELAYED=true
+#export NO_DELAYED=true
 
 if ! [ -e $OPENSHIFT_REPO_DIR/public ]; then
   mkdir $OPENSHIFT_REPO_DIR/public

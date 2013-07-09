@@ -47,3 +47,14 @@ namespace :db do
     ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths)
   end
 end
+
+namespace :jobs do
+  desc "Run a delayed job worker quietly"
+  task :worksilent => :environment do
+    Delayed::Worker.new(:min_priority => ENV['MIN_PRIORITY'],
+                        :max_priority => ENV['MAX_PRIORITY'],
+                        :queues => (ENV['QUEUES'] || ENV['QUEUE'] || '').split(','),
+                        :quiet => true).start
+  end
+end
+
