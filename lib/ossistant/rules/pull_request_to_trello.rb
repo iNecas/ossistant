@@ -58,8 +58,8 @@ Contributor Information
  * Author: **#{author['name']}** <#{author['email']}>
  * Company: #{author['company']}
  * Github ID: [#{author['login']}](#{author['url']})
- * [Pull Request #{pull_request['number']} Discussion](#{pull_request['html_url']})
- * [File Diff](#{pull_request['html_url']}/files)
+ * [Pull Request #{pull_request['number']} Discussion](#{pull_request['url']})
+ * [File Diff](#{pull_request['url']}/files)
 
 Pull Request
 ============
