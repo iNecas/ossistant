@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'apipie-params', :git => 'git://github.com/iNecas/apipie-params.git'
-gem 'dynflow', :git => 'git://github.com/iNecas/dynflow.git'
+gem 'dynflow', :git => 'git://github.com/iNecas/dynflow.git', :branch => 'ossistant'
 gem 'activerecord'
 gem 'activesupport'
 gem 'sqlite3'

@@ -9,6 +9,7 @@ GIT
 GIT
   remote: git://github.com/iNecas/dynflow.git
   revision: d3c8c6a3e2964de757de00c74a3806aaa1bb195d
+  branch: ossistant
   specs:
     dynflow (0.1.0)
       activesupport
